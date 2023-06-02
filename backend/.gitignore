@@ -1,0 +1,26 @@
+# Ignora los archivos generados por Flask y Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Ignora los archivos de entorno virtual
+venv/
+env/
+
+# Ignora los archivos de configuración
+instance/
+
+# Ignora los archivos generados por el IDE
+.vscode/
+.idea/
+
+# Ignora los archivos de logs
+logs/
+*.log
+
+# Ignora las credenciales de OAuth
+client_secrets.json
+
+# Ignore RSA KEYS
+*.pem
