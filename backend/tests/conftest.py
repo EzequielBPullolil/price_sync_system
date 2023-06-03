@@ -5,6 +5,9 @@ import pytest
 from sqlalchemy import text
 
 inventory_suject_fields = {
+    "price": 9999,
+    "stock": 10,
+    "name": "inventory_test_suject",
     "barcode": "fixture_registered_barcode"
 }
 
@@ -36,6 +39,11 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+
+@pytest.fixture()
+def inventory_suject() -> dict:
+    return inventory_suject_fields
 
 
 @pytest.fixture()
