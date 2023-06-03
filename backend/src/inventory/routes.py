@@ -23,5 +23,8 @@ def register_inventory():
 
     db_session.close()
     return make_response(
-        jsonify(inventory_dao), 201
+        jsonify({
+            "status": "Inventory created",
+            "inventory": inventory_dao
+        }), 201
     )
