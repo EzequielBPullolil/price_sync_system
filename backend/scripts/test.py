@@ -4,7 +4,7 @@ import sys
 
 # Establecer las variables de entorno
 os.environ['PYTHONPATH'] = '.'
-os.environ['DATABASE_URI'] = 'postgresql://usertestservices:testuser@localhost/blog_test'
+os.environ['DATABASE_URI'] = 'postgresql://usertestservices:testuser@localhost/stock_sync_system_test'
 
 # Borrar la pantalla (Windows: cls, Linux: clear)
 clear_command = 'cls' if os.name == 'nt' else 'clear'
