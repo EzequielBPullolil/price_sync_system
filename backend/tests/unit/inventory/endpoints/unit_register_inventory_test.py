@@ -7,11 +7,11 @@ class TestRegisterInventoryEndpoint:
         - Making an incomplete request to the endpoint responds with status 400 and error information
     """
     valid_request_fields = {
-            "barcode": "nonregisteredbarcode",
-            "name": "bon o bon",
-            "price": 9000,
-            "stock": 10
-        }
+        "barcode": "nonregisteredbarcode",
+        "name": "bon o bon",
+        "price": 9000,
+        "stock": 10
+    }
 
     def test_valid_request_responds_with_status_201(self, client):
         """
@@ -44,11 +44,9 @@ class TestRegisterInventoryEndpoint:
     def test_make_incomplete_request_to_endpoint_responds_with_status_400(self, client):
         """
           Makes a request to the endpoint without any of the necessary fields
-
-
         """
         necessary_fields = ["barcode", "name", "price", "stock"]
-        
+
         for field_to_delete in necessary_fields:
             request_body = self.valid_request_fields
             del request_body[field_to_delete]
