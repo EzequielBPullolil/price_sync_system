@@ -1,5 +1,29 @@
 from src.app import create_app
+from src.db import DbSession
+from src.inventory.model import Inventory
 import pytest
+from sqlalchemy import text
+
+inventory_suject_fields = {
+    "barcode": "fixture_registered_barcode"
+}
+
+
+def pytest_configure():
+    """
+        Delete all database rows 
+        and create inventory subject
+    """
+    session = DbSession()
+
+    session.execute(
+        text("DELETE FROM inventorys")
+    )
+    inventory_suject = Inventory(
+        barcode=inventory_suject_fields["barcode"]
+    )
+    session.add(inventory_suject)
+    session.commit()
 
 
 @pytest.fixture
@@ -12,3 +36,8 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+
+@pytest.fixture()
+def registered_barcode():
+    return inventory_suject_fields["barcode"]
