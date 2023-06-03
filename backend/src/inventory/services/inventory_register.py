@@ -27,6 +27,9 @@ class InventoryRegister:
             inventory
         )
         self.session.commit()
+        return {
+            "barcode": inventory_data["barcode"]
+        }
 
     def __is_barcode_avaible(self, barcode):
         """
