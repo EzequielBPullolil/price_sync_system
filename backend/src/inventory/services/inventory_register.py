@@ -21,7 +21,11 @@ class InventoryRegister:
         """
         self.__is_barcode_avaible(inventory_data["barcode"])
         inventory = Inventory(
-            barcode=inventory_data["barcode"]
+            barcode=inventory_data["barcode"],
+            price=inventory_data["price"],
+            stock=inventory_data["stock"],
+            name=inventory_data["name"],
+
         )
         self.session.add(
             inventory

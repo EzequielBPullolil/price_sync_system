@@ -23,7 +23,11 @@ def pytest_configure():
         text("DELETE FROM inventorys")
     )
     inventory_suject = Inventory(
-        barcode=inventory_suject_fields["barcode"]
+        barcode=inventory_suject_fields["barcode"],
+        name=inventory_suject_fields["name"],
+        price=inventory_suject_fields["price"],
+        stock=inventory_suject_fields["stock"],
+
     )
     session.add(inventory_suject)
     session.commit()
