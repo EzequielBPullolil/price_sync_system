@@ -36,3 +36,24 @@ class TestRegisterInventoryEndpoint:
         assert response.status_code == 400
         json_response = response.get_json()
         assert json_response["status"] == "error"
+        assert json_response["message"] == f"The barcode {registered_barcode} is already registered"
+
+    def test_make_incomplete_request_to_endpoint_responds_with_status_400(self, client):
+        """
+          Makes a request to the endpoint without any of the necessary fields
+
+
+        """
+        necessary_fields = ["barcode", "name", "price", "stock"]
+        valid_request_fields = {
+            "barcode": "nonregisteredbarcode",
+            "name": "bon o bon",
+            "price": 9000,
+            "stock": 10
+        }
+        for field_to_delete in necessary_fields:
+            request_body = valid_request_fields
+            del request_body[field_to_delete]
+            response = client.post("/inventory", json=request_body)
+
+            assert response.status_code == 400
