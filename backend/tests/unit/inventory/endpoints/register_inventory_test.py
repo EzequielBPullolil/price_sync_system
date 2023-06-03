@@ -12,9 +12,17 @@ class TestRegisterInventoryEndpoint:
           Request register inventory endpoint with valid inventory fields 
           responds with status 201 and inventory dao 
         """
-        response = client.post("/inventory")
+        request_body = {
+            "barcode": "abcdf"
+        }
+        response = client.post("/inventory", json=request_body)
 
         assert response.status_code == 201
+        json_response = response.get_json()
+        assert json_response["status"] == "Inventory created"
+
+        inventory_data = json_response["inventory"]
+        assert inventory_data["barcode"] == request_body["barcode"]
 
     def test_request_with_barcode_already_registered_responds_with_status_400(self, client, registered_barcode):
         """
@@ -26,3 +34,5 @@ class TestRegisterInventoryEndpoint:
         })
 
         assert response.status_code == 400
+        json_response = response.get_json()
+        assert json_response["status"] == "error"
