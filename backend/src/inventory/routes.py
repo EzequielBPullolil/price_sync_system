@@ -1,11 +1,13 @@
 from flask import Blueprint, request, jsonify, make_response
 
 from .services.inventory_register import InventoryRegister
+from .decorators import required_entrys
 from src.db import DbSession
 inventory_bp = Blueprint('inventory', __name__, url_prefix='/inventory')
 
 
 @inventory_bp.route('/', methods=["POST"],  strict_slashes=False)
+@required_entrys
 def register_inventory():
     """
         Register an inventory in the database and
