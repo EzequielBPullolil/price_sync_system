@@ -15,7 +15,6 @@ class TestFetchByBarcodeInventoryEndpoint:
 
         assert response.status_code == 200
         json_data = response.get_json()
-
-        assert json_data["name"] != inventory_suject["name"]
-        assert json_data["stock"] != inventory_suject["stock"]
-        assert json_data["price"] != inventory_suject["price"]
+        assert json_data["name"] == inventory_suject["name"]
+        assert json_data["stock"] == inventory_suject["stock"]
+        assert json_data["price"] == inventory_suject["price"]
