@@ -1,5 +1,6 @@
 from src.inventory.utils import InventoryDAO
 from src.inventory.model import Inventory
+from src.exceptions import UnregisteredBarcode
 
 
 class InventoryFetcher:
@@ -17,4 +18,7 @@ class InventoryFetcher:
         """
         inventory = self.session.query(
             Inventory).filter_by(barcode=barcode).first()
+        if (inventory == None):
+            raise UnregisteredBarcode(barcode)
+
         return InventoryDAO(inventory)

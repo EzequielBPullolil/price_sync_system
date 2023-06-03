@@ -18,3 +18,12 @@ class TestFetchByBarcodeInventoryEndpoint:
         assert json_data["name"] == inventory_suject["name"]
         assert json_data["stock"] == inventory_suject["stock"]
         assert json_data["price"] == inventory_suject["price"]
+
+    def test_request_with_unregistered_barcode_responds_with_status_code_400(self, client):
+        """
+          Verify if request endpoint with unregistered barcode responds with status code 400
+        """
+        unregistered_barcode = "unregistered_barcode_for_fetch_test"
+        response = client.get(f"/inventory/{unregistered_barcode}")
+
+        assert response.status_code == 400
