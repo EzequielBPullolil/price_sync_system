@@ -1,4 +1,7 @@
-from flask import Blueprint
+from flask import Blueprint, request, jsonify, make_response
+
+from .services.inventory_register import InventoryRegister
+from src.db import DbSession
 inventory_bp = Blueprint('inventory', __name__, url_prefix='/inventory')
 
 
@@ -14,4 +17,11 @@ def register_inventory():
 
         :rtype: json
     """
-    return {}, 201
+    db_session = DbSession()
+    inventory_register = InventoryRegister(db_session)
+    inventory_dao = inventory_register.register(request.get_json())
+
+    db_session.close()
+    return make_response(
+        jsonify(inventory_dao), 201
+    )
