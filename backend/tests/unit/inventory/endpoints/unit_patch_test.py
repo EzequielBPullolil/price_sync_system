@@ -34,3 +34,17 @@ class TestPatchInventoryEndpoint:
         })
 
         assert response.status_code == 400
+
+    def test_request_with_any_field_other_than_price_or_stock_does_not_update_field_inventory(self, client, inventory_suject):
+        """
+          Check if sending any field other than price or stock causes inventory not to update those fields
+        """
+        updated_inventory = {
+            "name": 909223
+        }
+        response = client.patch(
+            f"/inventory/{inventory_suject['barcode']}", json=updated_inventory)
+
+        assert response.status_code == 200
+        json_data = response.get_json()
+        assert json_data["name"] == inventory_suject["name"]
