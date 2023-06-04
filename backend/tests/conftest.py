@@ -47,7 +47,15 @@ def client(app):
 
 @pytest.fixture()
 def inventory_suject() -> dict:
-    return inventory_suject_fields
+    session = DbSession()
+    inventory = session.query(Inventory).filter_by(
+        barcode=inventory_suject_fields["barcode"]).first()
+    return {
+        "price": inventory.price,
+        "stock": inventory.stock,
+        "name": inventory.name,
+        "barcode": inventory.barcode
+    }
 
 
 @pytest.fixture()
