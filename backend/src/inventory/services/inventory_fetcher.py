@@ -18,6 +18,6 @@ class InventoryFetcher:
             :barcode(str): The invetory barcode
           returns: InventoryDAO
         """
-        inventory = self.barcode_manager(barcode)
+        inventory = self.barcode_manager.find_or_raises(barcode)
 
         return InventoryDAO(inventory)
