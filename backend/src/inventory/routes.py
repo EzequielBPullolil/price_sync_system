@@ -14,7 +14,11 @@ def register_inventory():
         Register an inventory in the database and
         create a log after validating the request fields
 
-        :reqjson barcode: The inventory barcode
+        :reqjson inventory
+                barcode(str): The inventory barcode
+                price(int): The inventory price
+                stock(int): The inventory stock
+                name(str): The inventory name
 
         :return: Success message and persisted inventoryDAO
 
