@@ -1,11 +1,13 @@
 from src.inventory.utils import InventoryDAO
 from src.inventory.model import Inventory
 from src.exceptions import UnregisteredBarcode
+from src.common.helpers import BarcodeManager
 
 
 class InventoryFetcher:
     def __init__(self, db_session):
         self.session = db_session
+        self.barcode_manager = BarcodeManager(db_session)
 
     def find_by_barcode(self, barcode):
         """
@@ -16,9 +18,6 @@ class InventoryFetcher:
             :barcode(str): The invetory barcode
           returns: InventoryDAO
         """
-        inventory = self.session.query(
-            Inventory).filter_by(barcode=barcode).first()
-        if (inventory == None):
-            raise UnregisteredBarcode(barcode)
+        inventory = self.barcode_manager(barcode)
 
         return InventoryDAO(inventory)
