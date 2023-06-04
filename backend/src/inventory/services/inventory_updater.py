@@ -24,8 +24,10 @@ class InventoryUpdater:
           :raises UnregisteredBarcode
         """
         inventory_to_patch = self.barcode_manager.find_or_raises(barcode)
-        inventory_to_patch.stock = inventory_data["stock"]
-        inventory_to_patch.price = inventory_data["price"]
+        if ("stock" in inventory_data):
+            inventory_to_patch.stock = inventory_data["stock"]
+        if ("price" in inventory_data):
+            inventory_to_patch.price = inventory_data["price"]
 
         self.session.commit()
 
