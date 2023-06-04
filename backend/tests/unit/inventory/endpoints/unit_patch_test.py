@@ -28,6 +28,9 @@ class TestPatchInventoryEndpoint:
           Verify if request endpoint with unregistered barcode responds with status code 400
         """
         unregistered_barcode = "unregistered_barcode_for_patch_test"
-        response = client.patch(f"/inventory/{unregistered_barcode}")
+        response = client.patch(f"/inventory/{unregistered_barcode}", json={
+            "price": 9,
+            "stock": 0
+        })
 
         assert response.status_code == 400
