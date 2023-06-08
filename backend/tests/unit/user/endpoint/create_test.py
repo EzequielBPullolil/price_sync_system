@@ -23,12 +23,17 @@ class TestCreateUserEndpoint:
             - The response should have a status code of 201
             - The response should contain a 'user dao' object with the expected fields and values.
         """
-        response = client_with_session.post("/user", json={
+        valid_reqbody = {
             "name": "Zeki",
             "password": "zxcvbnm",
             "role_id": 1
-        })
+        }
+        response = client_with_session.post("/user", json=valid_reqbody)
         assert response.status_code == 201
         json_response = response.get_json()
 
         assert json_response["status"] == "User created"
+        response_user_dao = json_response["user"]
+        assert response_user_dao["name"] == valid_reqbody["name"]
+        assert response_user_dao["role_name"] == "employee"
+        assert response_user_dao["id"] != None
