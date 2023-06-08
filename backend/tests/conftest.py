@@ -1,7 +1,7 @@
 from src.app import create_app
 from src.db import DbSession
 from src.inventory.model import Inventory
-from src.user.model import User
+from src.user_role.models import User
 import pytest
 from sqlalchemy import text
 
@@ -26,6 +26,9 @@ def pytest_configure():
 
     session.execute(
         text("DELETE FROM inventorys")
+    )
+    session.execute(
+        text("DELETE FROM users")
     )
     inventory_suject = Inventory(
         barcode=inventory_suject_fields["barcode"],
