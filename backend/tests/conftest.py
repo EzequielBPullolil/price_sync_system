@@ -1,6 +1,7 @@
 from src.app import create_app
 from src.db import DbSession
 from src.inventory.model import Inventory
+from src.user.model import User
 import pytest
 from sqlalchemy import text
 
@@ -9,6 +10,10 @@ inventory_suject_fields = {
     "stock": 10,
     "name": "inventory_test_suject",
     "barcode": "fixture_registered_barcode"
+}
+user_suject_fields = {
+    "name": "zeki",
+    "password": "apassword"
 }
 
 
@@ -28,6 +33,11 @@ def pytest_configure():
         price=inventory_suject_fields["price"],
         stock=inventory_suject_fields["stock"]
     )
+    user_suject = User(
+        name=user_suject_fields["name"],
+        password=user_suject_fields["password"]
+    )
+    session.add(user_suject)
     session.add(inventory_suject)
     session.commit()
 
@@ -50,6 +60,7 @@ def inventory_suject() -> dict:
     session = DbSession()
     inventory = session.query(Inventory).filter_by(
         barcode=inventory_suject_fields["barcode"]).first()
+    session.close()
     return {
         "price": inventory.price,
         "stock": inventory.stock,
@@ -66,6 +77,20 @@ def registered_barcode():
 @pytest.fixture()
 def master_role_id():
     return 9
+
+
+@pytest.fixture()
+def registered_user():
+    session = DbSession()
+    user = session.query(User).filter_by(
+        name=user_suject_fields["name"]).first()
+    user_id = user.id
+    session.close()
+    return {
+        "id": user_id,
+        "name": user.name,
+        "password": user.password
+    }
 
 
 @pytest.fixture()
