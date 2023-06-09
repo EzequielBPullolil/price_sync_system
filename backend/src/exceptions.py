@@ -23,6 +23,12 @@ class MissingRequiredEntry(ApplicationLayerException):
             message=f"The entry {missingEntry} is missing")
 
 
+class AlreadyRegisteredName(DomainException):
+    def __init__(self, name):
+        super().__init__(
+            message=f"The name {name} is already registered")
+
+
 class AlreadyRegisteredBarcode(DomainException):
     def __init__(self, barcode):
         super().__init__(
