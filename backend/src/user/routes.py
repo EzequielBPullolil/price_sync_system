@@ -1,4 +1,6 @@
-from flask import Blueprint
+from flask import Blueprint, request
+from .services.user_creator import UserCreator
+from src.db import DbSession
 user_bp = Blueprint('user', __name__, url_prefix='/user')
 
 
@@ -17,6 +19,11 @@ def create_user():
 
       :rtype: json
     """
+    session = DbSession()
+    user_creator = UserCreator(session)
+
+    created_user_dao = user_creator.create(request.get_json())
     return {
-        "status": "User created"
+        "status": "User created",
+        "user": created_user_dao.to_dict()
     }, 201
