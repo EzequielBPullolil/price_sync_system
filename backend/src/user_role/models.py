@@ -28,11 +28,15 @@ class Role(Base):
     name = Column(String(50), unique=True, nullable=False)
 
 
-class RoleUser(Base):
-    __tablename__ = 'role_user'
+class UserRole(Base):
+    __tablename__ = 'user_role'
     user_id = Column(UUID(as_uuid=True), ForeignKey(
         'users.id'), primary_key=True)
     role_id = Column(Integer, ForeignKey('roles.id'), primary_key=True)
+
+    def __init__(self, user_id, role_id):
+        self.user_id = user_id
+        self.role_id = role_id
 
     def __repr__(self):
         return f"RoleUser(user_id={self.user_id}, role_id={self.role_id})"
