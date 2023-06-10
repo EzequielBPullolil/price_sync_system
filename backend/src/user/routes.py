@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from src.user_role.role_enum import RolesID
-from src.user.decorators import role_required
+from src.decorators import required_fields
 from .services.user_creator import UserCreator
 from src.db import DbSession
 user_bp = Blueprint('user', __name__, url_prefix='/user')
@@ -8,6 +8,7 @@ user_bp = Blueprint('user', __name__, url_prefix='/user')
 
 @user_bp.route("/", methods=["POST"],  strict_slashes=False)
 @role_required(RolesID.MASTER.value)
+@required_fields(["name", "password", "role_id"])
 def create_user():
     """
       Persist an user in db and return UserDAO
