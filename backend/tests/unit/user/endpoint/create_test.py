@@ -81,3 +81,39 @@ class TestCreateUserEndpoint:
         response = employee_client.post("/user", json=valid_request)
 
         assert response.status_code == 401
+
+    def test_incomplete_request_responds_with_status_400_and_error_json(self, master_client, employee_role_id):
+        """
+            Verify that sending a incomplete request with a unauthorized user to the 'create_user' endpoint responds
+            with a status code of 400 and an error JSON object.
+            Scenario:
+                - Attempting to request create user endpoint with a empty or missing name in the system.
+                - Attempting to request create user endpoint with a empty or missing password in the system.
+            Expected behavior:
+                - The response should have a status code of 401
+                - The response should contain a 'json_error' 
+        """
+        required_fields = ["name", "password"]
+        valid_fields = {
+            "name": "Doc",
+            "password": "zxcvbnm",
+            "role_id": employee_role_id
+        }
+        for required_field in required_fields:
+            request_fields = valid_fields  # Copy valid fields
+
+            # Request with empty field
+            request_fields[required_field] = ""
+            response = master_client.post("/user", json=request_fields)
+            assert response.status_code == 400
+            # Request with missing field
+            del request_fields[required_field]
+            response = master_client.post("/user", json=request_fields)
+            assert response.status_code == 400
+
+        valid_fields = {
+            "name": "Doc",
+            "password": "zxcvbnm"
+        }
+        response = master_client.post("/user", json=valid_fields)
+        assert response.status_code == 400
