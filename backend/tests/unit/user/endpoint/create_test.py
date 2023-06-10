@@ -3,7 +3,7 @@ class TestCreateUserEndpoint:
      This test verifies the correct operation of the create_user endpoint
      using the following test cases:
        - Valid endpoint request responds with status 201 and the UserDAO
-       - Request endpoint with non authorized user responds with status code 401
+       - Request endpoint with unauthorized user responds with status code 401
        - Making an incomplete request to the endpoint responds with status 400 and error information
        - Request endpoint with already registered name responds with status 400
 
@@ -40,7 +40,7 @@ class TestCreateUserEndpoint:
         assert response_user_dao["role_name"] == "employee"
         assert response_user_dao["id"] != None
 
-    def test_request_endpoint_with_already_registered_name_responds_with_status_400_and_error_json(self, client_with_session, registered_user):
+    def test_request_endpoint_with_already_registered_name_responds_with_status_400_and_error_json(self, client_with_session, registered_user, employee_role_id):
         """
             Verify that sending a valid request with a registered name to the 'create_user' endpoint responds
             with a status code of 400 and an error JSON object.
@@ -53,7 +53,7 @@ class TestCreateUserEndpoint:
         rebody_with_registered_name = {
             "name": registered_user["name"],
             "password": "zxcvbnm",
-            "role_id": 1
+            "role_id": employee_role_id
         }
         response = client_with_session.post("/user",
                                             json=rebody_with_registered_name)
@@ -62,3 +62,22 @@ class TestCreateUserEndpoint:
 
         assert json_response["status"] == "error"
         assert json_response["message"] == f"The name {registered_user['name']} is already registered"
+
+    def test_request_endpoint_with_unauthorized_user_responds_with_status_code_401_and_error_json(self, unauthorized_client, employee_role_id):
+        """
+            Verify that sending a valid request with a unauthorized user to the 'create_user' endpoint responds
+            with a status code of 401 and an error JSON object.
+            Scenario:
+                - Attempting to create a user with a unauthorized user in the system.
+            Expected behavior:
+                - The response should have a status code of 401
+                - The response should contain a 'json_error' 
+        """
+        valid_request = {
+            "name": "Doc",
+            "password": "zxcvbnm",
+            "role_id": employee_role_id
+        }
+        response = unauthorized_client.post("/user", json=valid_request)
+
+        assert response.status_code == 401
