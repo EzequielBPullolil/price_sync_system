@@ -27,11 +27,16 @@ class Role(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50), unique=True, nullable=False)
 
+    def __init__(self, id, name):
+        self.id = id
+        self.name = name
+
 
 class UserRole(Base):
     __tablename__ = 'user_role'
-    user_id = Column(UUID(as_uuid=True), ForeignKey(
-        'users.id'), primary_key=True)
+    user_id = Column(UUID(as_uuid=True),
+                     ForeignKey('users.id'),
+                     primary_key=True)
     role_id = Column(Integer, ForeignKey('roles.id'), primary_key=True)
 
     def __init__(self, user_id, role_id):
