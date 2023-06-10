@@ -16,7 +16,7 @@ class TestCreateUserEndpoint:
         * role: valid role id
    """
 
-    def test_valid_request_responds_with_status_201_and_user_dao(self, client_with_session):
+    def test_valid_request_responds_with_status_201_and_user_dao(self, client_with_session, employee_role_id):
         """
         Verify that sending a valid request to the 'create_user' endpoint responds
         with a status code of 201 and a valid 'user dao' object.
@@ -28,7 +28,7 @@ class TestCreateUserEndpoint:
         valid_reqbody = {
             "name": "Zeki",
             "password": "zxcvbnm",
-            "role_id": 1
+            "role_id": employee_role_id
         }
         response = client_with_session.post("/user", json=valid_reqbody)
         assert response.status_code == 201
