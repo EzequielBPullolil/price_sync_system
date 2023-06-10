@@ -5,6 +5,9 @@ from src.user_role.models import User
 import pytest
 from sqlalchemy import text
 
+from tests.utils.create_roles import create_roles
+from tests.utils.reset_database import reset_database
+
 inventory_suject_fields = {
     "price": 9999,
     "stock": 10,
@@ -23,13 +26,8 @@ def pytest_configure():
         and create inventory subject
     """
     session = DbSession()
-
-    session.execute(
-        text("DELETE FROM inventorys")
-    )
-    session.execute(
-        text("DELETE FROM users")
-    )
+    reset_database(session)
+    create_roles(session)
     inventory_suject = Inventory(
         barcode=inventory_suject_fields["barcode"],
         name=inventory_suject_fields["name"],
@@ -79,7 +77,11 @@ def registered_barcode():
 
 @pytest.fixture()
 def master_role_id():
-    return 9
+    return 1
+
+@pytest.fixture()
+def employee_role_id():
+    return 2
 
 
 @pytest.fixture()
