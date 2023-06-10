@@ -101,6 +101,9 @@ def registered_user():
 
 @pytest.fixture()
 def master_client(client, master_role_id):
+    """
+        Creates a client session with an master role_id
+    """
     with client.session_transaction() as session:
         session['role_id'] = master_role_id
 
@@ -109,6 +112,9 @@ def master_client(client, master_role_id):
 
 @pytest.fixture()
 def employee_client(client, employee_role_id):
+    """
+        Creates a client session with an employee role_id
+    """
     with client.session_transaction() as session:
         session['role_id'] = employee_role_id
 
