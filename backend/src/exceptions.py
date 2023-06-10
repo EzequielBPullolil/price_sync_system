@@ -10,6 +10,12 @@ class DomainException(Exception):
         self.status = "error"
 
 
+class UnauthorizedUser(DomainException):
+    def __init__(self):
+        super().__init__(
+            message=f"User permissions are not enough to enter this endpoint")
+
+
 class ApplicationLayerException(Exception):
     def __init__(self, message):
         super().__init__()
