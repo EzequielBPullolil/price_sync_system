@@ -1,11 +1,13 @@
 from src.exceptions import AlreadyRegisteredName
 from src.user_role.models import User
 from ..utils import UserDAO
+from src.user_role.services import RoleAssigner
 
 
 class UserCreator:
     def __init__(self, session):
         self.session = session
+        self.role_assigner = RoleAssigner(session)
 
     def create(self, user_data):
         """
@@ -34,4 +36,6 @@ class UserCreator:
         self.session.add(user)
         self.session.commit()
 
-        return UserDAO(user)
+        role_name = self.role_assigner.assing_role(user, user_data["role_id"])
+
+        return UserDAO(user, role_name)
