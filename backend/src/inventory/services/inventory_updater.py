@@ -1,7 +1,7 @@
 
 from src.inventory.model import Inventory
 from src.inventory.utils import InventoryDAO
-from src.common.helpers import BarcodeManager
+from src.helpers import BarcodeManager
 
 
 class InventoryUpdater:
