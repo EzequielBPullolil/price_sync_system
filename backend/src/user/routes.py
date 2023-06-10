@@ -1,10 +1,13 @@
 from flask import Blueprint, request
+
+from src.user.decorators import role_required
 from .services.user_creator import UserCreator
 from src.db import DbSession
 user_bp = Blueprint('user', __name__, url_prefix='/user')
 
 
 @user_bp.route("/", methods=["POST"],  strict_slashes=False)
+@role_required(1)
 def create_user():
     """
       Persist an user in db and return UserDAO
@@ -23,6 +26,7 @@ def create_user():
     user_creator = UserCreator(session)
 
     created_user_dao = user_creator.create(request.get_json())
+    session.close()
     return {
         "status": "User created",
         "user": created_user_dao.to_dict()
