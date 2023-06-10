@@ -10,6 +10,18 @@ class DomainException(Exception):
         self.status = "error"
 
 
+class MissingRequiredField(DomainException):
+    def __init__(self, field):
+        super().__init__(
+            message=f"Missing the required field '{field}'")
+
+
+class InvalidUserField(DomainException):
+    def __init__(self, field):
+        super().__init__(
+            message=f"The field'{field}' is invalid")
+
+
 class UnauthorizedUser(DomainException):
     def __init__(self):
         super().__init__(
