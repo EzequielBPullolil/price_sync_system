@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-
+from src.user_role.role_enum import RolesID
 from src.user.decorators import role_required
 from .services.user_creator import UserCreator
 from src.db import DbSession
@@ -7,7 +7,7 @@ user_bp = Blueprint('user', __name__, url_prefix='/user')
 
 
 @user_bp.route("/", methods=["POST"],  strict_slashes=False)
-@role_required(1)
+@role_required(RolesID.MASTER.value)
 def create_user():
     """
       Persist an user in db and return UserDAO

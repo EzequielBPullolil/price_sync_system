@@ -3,8 +3,7 @@ from src.db import DbSession
 from src.inventory.model import Inventory
 from src.user_role.models import User
 import pytest
-from sqlalchemy import text
-
+from src.user_role.role_enum import RolesID
 from tests.utils.create_roles import create_roles
 from tests.utils.reset_database import reset_database
 
@@ -78,12 +77,12 @@ def registered_barcode():
 
 @pytest.fixture()
 def master_role_id():
-    return 1
+    return RolesID.MASTER.value
 
 
 @pytest.fixture()
 def employee_role_id():
-    return 2
+    return RolesID.EMPLOYEE.value
 
 
 @pytest.fixture()
