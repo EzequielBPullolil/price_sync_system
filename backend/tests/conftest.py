@@ -100,7 +100,7 @@ def registered_user():
 
 
 @pytest.fixture()
-def client_with_session(client, master_role_id):
+def master_client(client, master_role_id):
     with client.session_transaction() as session:
         session['role_id'] = master_role_id
 
@@ -108,7 +108,7 @@ def client_with_session(client, master_role_id):
 
 
 @pytest.fixture()
-def unauthorized_client(client, employee_role_id):
+def employee_client(client, employee_role_id):
     with client.session_transaction() as session:
         session['role_id'] = employee_role_id
 

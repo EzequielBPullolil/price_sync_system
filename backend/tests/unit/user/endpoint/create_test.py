@@ -16,7 +16,7 @@ class TestCreateUserEndpoint:
         * role: valid role id
    """
 
-    def test_valid_request_responds_with_status_201_and_user_dao(self, client_with_session, employee_role_id):
+    def test_valid_request_responds_with_status_201_and_user_dao(self, master_client, employee_role_id):
         """
         Verify that sending a valid request to the 'create_user' endpoint responds
         with a status code of 201 and a valid 'user dao' object.
@@ -30,7 +30,7 @@ class TestCreateUserEndpoint:
             "password": "zxcvbnm",
             "role_id": employee_role_id
         }
-        response = client_with_session.post("/user", json=valid_reqbody)
+        response = master_client.post("/user", json=valid_reqbody)
         assert response.status_code == 201
         json_response = response.get_json()
 
@@ -40,7 +40,7 @@ class TestCreateUserEndpoint:
         assert response_user_dao["role_name"] == "employee"
         assert response_user_dao["id"] != None
 
-    def test_request_endpoint_with_already_registered_name_responds_with_status_400_and_error_json(self, client_with_session, registered_user, employee_role_id):
+    def test_request_endpoint_with_already_registered_name_responds_with_status_400_and_error_json(self, master_client, registered_user, employee_role_id):
         """
             Verify that sending a valid request with a registered name to the 'create_user' endpoint responds
             with a status code of 400 and an error JSON object.
@@ -55,15 +55,15 @@ class TestCreateUserEndpoint:
             "password": "zxcvbnm",
             "role_id": employee_role_id
         }
-        response = client_with_session.post("/user",
-                                            json=rebody_with_registered_name)
+        response = master_client.post("/user",
+                                      json=rebody_with_registered_name)
         assert response.status_code == 400
         json_response = response.get_json()
 
         assert json_response["status"] == "error"
         assert json_response["message"] == f"The name {registered_user['name']} is already registered"
 
-    def test_request_endpoint_with_unauthorized_user_responds_with_status_code_401_and_error_json(self, unauthorized_client, employee_role_id):
+    def test_request_endpoint_with_unauthorized_user_responds_with_status_code_401_and_error_json(self, employee_client, employee_role_id):
         """
             Verify that sending a valid request with a unauthorized user to the 'create_user' endpoint responds
             with a status code of 401 and an error JSON object.
@@ -78,6 +78,6 @@ class TestCreateUserEndpoint:
             "password": "zxcvbnm",
             "role_id": employee_role_id
         }
-        response = unauthorized_client.post("/user", json=valid_request)
+        response = employee_client.post("/user", json=valid_request)
 
         assert response.status_code == 401
