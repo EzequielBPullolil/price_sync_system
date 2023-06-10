@@ -38,6 +38,7 @@ def pytest_configure():
         name=user_suject_fields["name"],
         password=user_suject_fields["password"]
     )
+
     session.add(user_suject)
     session.add(inventory_suject)
     session.commit()
@@ -79,6 +80,7 @@ def registered_barcode():
 def master_role_id():
     return 1
 
+
 @pytest.fixture()
 def employee_role_id():
     return 2
@@ -102,5 +104,13 @@ def registered_user():
 def client_with_session(client, master_role_id):
     with client.session_transaction() as session:
         session['role_id'] = master_role_id
+
+    yield client
+
+
+@pytest.fixture()
+def unauthorized_client(client, employee_role_id):
+    with client.session_transaction() as session:
+        session['role_id'] = employee_role_id
 
     yield client
