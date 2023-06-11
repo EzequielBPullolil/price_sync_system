@@ -93,9 +93,9 @@ def registered_user():
     user_id = user.id
     session.close()
     return {
-        "id": user_id,
+        "id": str(user_id),
         "name": user.name,
-        "password": user.password
+        "password": user_suject_fields["password"]
     }
 
 
