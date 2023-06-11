@@ -25,7 +25,7 @@ class LoginManager:
             name=login_credentials["name"]
         ).first()
 
-        if (not user.check_password(login_credentials["password"])):
+        if (user == None or not user.check_password(login_credentials["password"])):
             raise InvalidLoginCredentials
 
         return user

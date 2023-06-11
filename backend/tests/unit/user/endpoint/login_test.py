@@ -36,3 +36,24 @@ class TestLoginEndpoint:
         assert login_information["status"] == "success"
         assert login_information["message"] == "Successful login"
         assert login_information["user_id"] == registered_user["id"]
+
+    def test_request_with_unregistered_user_responds_with_status_code_400(self, client):
+        """
+            Verify that sending a valid request to the 'login' endpoint responds
+            with a status code of 200 and user_id
+
+            Expected behavior:
+                - The response should have a status code of 400
+                - The response should contain error json
+        """
+        response = client.post('/auth/login', json={
+            "name": 'unregisteredUserLG',
+            "password": "unregisteredUserLG"
+        })
+
+        assert response.status_code == 400
+
+        json_error = response.get_json()
+
+        assert json_error["status"] == "error"
+        assert json_error["message"] == "Invalid login credentials"
