@@ -3,6 +3,7 @@ from src.user_role.role_enum import RolesID
 from src.user.decorators import role_required, validate_create_user_fields
 from src.decorators import required_fields
 from .services.user_creator import UserCreator
+from .services.login_manager import LoginManager
 from src.db import DbSession
 user_bp = Blueprint('user', __name__, url_prefix='/user')
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
