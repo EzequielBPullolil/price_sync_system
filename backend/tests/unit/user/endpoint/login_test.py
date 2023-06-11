@@ -76,3 +76,19 @@ class TestLoginEndpoint:
             "name": 'unregisteredUserLG'
         })
         assert response.status_code == 400
+
+    def test_request_with_registered_name_and_invalid_password_responds_with_status_code_400(self, client, registered_user):
+        """
+            Verify that sending a request with registered name but invalid password
+            to the 'login' endpoint responds with a status code of 400 and json_error
+
+            Expected behavior:
+                - The response should have a status code of 200
+                - The response should contain a status, message and user_id
+        """
+        response = client.post('/auth/login', json={
+            "name": registered_user["name"],
+            "password": "a invalid password for user"
+        })
+
+        assert response.status_code == 400
