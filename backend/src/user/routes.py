@@ -39,6 +39,7 @@ def create_user():
 
 
 @auth_bp.route("/login", methods=["POST"],  strict_slashes=False)
+@required_fields(["name", "password"])
 def login():
     """
       Validate user credentials and create session
