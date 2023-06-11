@@ -5,6 +5,7 @@ from src.decorators import required_fields
 from .services.user_creator import UserCreator
 from src.db import DbSession
 user_bp = Blueprint('user', __name__, url_prefix='/user')
+auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
 @user_bp.route("/", methods=["POST"],  strict_slashes=False)
