@@ -22,6 +22,12 @@ class InvalidUserField(DomainException):
             message=f"The field'{field}' is invalid")
 
 
+class InvalidLoginCredentials(DomainException):
+    def __init__(self):
+        super().__init__(
+            message=f"Invalid login credentials")
+
+
 class UnauthorizedUser(DomainException):
     def __init__(self):
         super().__init__(
