@@ -35,3 +35,20 @@ def create_user():
         "status": "User created",
         "user": created_user_dao.to_dict()
     }, 201
+
+
+@auth_bp.route("/login", methods=["POST"],  strict_slashes=False)
+def login():
+    """
+      Validate user credentials and create session
+    """
+    sessionDb = DbSession()
+    login_manager = LoginManager(sessionDb)
+    user = login_manager.validate_credentials(request.get_json())
+
+    sessionDb.close()
+    return {
+        "status": "success",
+        "message": "Successful login",
+        "user_id": user.id
+    }, 200
