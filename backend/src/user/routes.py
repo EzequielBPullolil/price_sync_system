@@ -1,5 +1,6 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, session
 from src.user_role.role_enum import RolesID
+
 from src.user.decorators import role_required, validate_create_user_fields
 from src.decorators import required_fields
 from .services.user_creator import UserCreator
@@ -47,10 +48,10 @@ def login():
     sessionDb = DbSession()
     login_manager = LoginManager(sessionDb)
     user = login_manager.validate_credentials(request.get_json())
-
+    generated_token = login_manager.generate_token(user)
     sessionDb.close()
     return {
         "status": "success",
         "message": "Successful login",
-        "user_id": user.id
+        "token": generated_token
     }, 200
