@@ -1,7 +1,7 @@
 from src.app import create_app
 from src.db import DbSession
 from src.inventory.model import Inventory
-from src.user_role.models import User
+from src.user_role.models import User, UserRole
 import pytest
 from src.user_role.role_enum import RolesID
 from tests.utils.create_roles import create_roles
@@ -39,7 +39,13 @@ def pytest_configure():
     )
 
     session.add(user_suject)
+
     session.add(inventory_suject)
+    session.commit()
+    session.add(UserRole(
+        user_id=user_suject.get_id(),
+        role_id=2
+    ))
     session.commit()
 
 
@@ -90,12 +96,15 @@ def registered_user():
     session = DbSession()
     user = session.query(User).filter_by(
         name=user_suject_fields["name"]).first()
-    user_id = user.id
+    user_id = str(user.id)
+    user_role = session.query(UserRole).filter_by(
+        user_id=user_id).first()
     session.close()
     return {
         "id": str(user_id),
         "name": user.name,
-        "password": user_suject_fields["password"]
+        "password": user_suject_fields["password"],
+        "role_id": user_role.role_id
     }
 
 
