@@ -35,7 +35,7 @@ class TestLoginEndpoint:
 
         assert login_information["status"] == "success"
         assert login_information["message"] == "Successful login"
-        assert login_information["user_id"] == registered_user["id"]
+        assert login_information["token"] != None
 
     def test_request_with_unregistered_user_responds_with_status_code_400(self, client):
         """
