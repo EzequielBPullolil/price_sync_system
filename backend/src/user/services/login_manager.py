@@ -1,9 +1,12 @@
 from src.exceptions import InvalidLoginCredentials
-from src.user_role.models import User
+from src.user_role.models import User, UserRole
+import jwt
+import os
 
 
 class LoginManager:
     def __init__(self, session):
+        self.__secret_key = os.environ["SECRET_KEY"]
         self.session = session
 
     def validate_credentials(self, login_credentials):
@@ -29,3 +32,24 @@ class LoginManager:
             raise InvalidLoginCredentials
 
         return user
+
+    def generate_token(self, user):
+        """
+         Create a JWT with the id of the user and id of his role with the user
+         of user
+        """
+        payload = {}
+        payload["user_id"] = user.get_id()
+        payload["role_id"] = self.__role_id(user)
+
+        return jwt.encode(payload, self.__secret_key)
+
+    def __role_id(self, user):
+        """
+          Describes de role_id of user
+        """
+        role = self.session.query(UserRole).filter_by(
+            user_id=user.get_id()
+        ).first()
+
+        return role.role_id
