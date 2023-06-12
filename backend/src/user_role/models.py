@@ -15,6 +15,9 @@ class User(Base):
         self.name = name
         self.set_password(password)
 
+    def get_id(self):
+        return str(self.id)
+
     def set_password(self, password):
         self.password = generate_password_hash(password)
 
