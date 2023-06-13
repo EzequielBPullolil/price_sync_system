@@ -1,6 +1,6 @@
 from flask import Flask, make_response, jsonify, session
 from src.inventory.routes import inventory_bp
-from src.user.routes import user_bp, auth_bp
+from src.auth.routes import auth_bp
 from src.exceptions import ApplicationLayerException, DomainException, UnauthorizedUser
 import os
 
@@ -9,7 +9,6 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = os.environ["SECRET_KEY"]
     app.register_blueprint(inventory_bp)
-    app.register_blueprint(user_bp)
     app.register_blueprint(auth_bp)
 
     @app.errorhandler(ApplicationLayerException)
