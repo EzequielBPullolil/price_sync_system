@@ -14,6 +14,7 @@ class TestLoginEndpoint:
           * name: Not registered name and length > 3
           * password: String length > 8
    """
+    endpoint_url = "/auth/login"
 
     def test_valid_request_responds_with_status_200_and_login_information(self, client, registered_user):
         """
@@ -24,7 +25,7 @@ class TestLoginEndpoint:
                 - The response should have a status code of 200
                 - The response should contain a status, message and user_id
         """
-        response = client.post('/auth/login', json={
+        response = client.post(self.endpoint_url, json={
             "name": registered_user["name"],
             "password": registered_user["password"]
         })
@@ -46,7 +47,7 @@ class TestLoginEndpoint:
                 - The response should have a status code of 400
                 - The response should contain error json
         """
-        response = client.post('/auth/login', json={
+        response = client.post(self.endpoint_url, json={
             "name": 'unregisteredUserLG',
             "password": "unregisteredUserLG"
         })
@@ -67,12 +68,12 @@ class TestLoginEndpoint:
                 - The response should have a status code of 400
                 - The response should contain error json
         """
-        response = client.post('/auth/login', json={
+        response = client.post(self.endpoint_url, json={
             "password": "unregisteredUserLG"
         })
         assert response.status_code == 400
 
-        response = client.post('/auth/login', json={
+        response = client.post(self.endpoint_url, json={
             "name": 'unregisteredUserLG'
         })
         assert response.status_code == 400
@@ -86,7 +87,7 @@ class TestLoginEndpoint:
                 - The response should have a status code of 200
                 - The response should contain a status, message and user_id
         """
-        response = client.post('/auth/login', json={
+        response = client.post(self.endpoint_url, json={
             "name": registered_user["name"],
             "password": "a invalid password for user"
         })
