@@ -4,7 +4,7 @@ import jwt
 import os
 
 
-class LoginManager:
+class LoginService:
     def __init__(self, session):
         self.__secret_key = os.environ["SECRET_KEY"]
         self.session = session
