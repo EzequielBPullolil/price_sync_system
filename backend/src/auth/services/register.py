@@ -4,12 +4,12 @@ from ..utils import UserDAO
 from src.user_role.services import RoleAssigner
 
 
-class UserCreator:
+class RegisterService:
     def __init__(self, session):
         self.session = session
         self.role_assigner = RoleAssigner(session)
 
-    def create(self, user_data):
+    def register(self, user_data):
         """
           Persist a new user in the db, assign it the passed
           role_id and return a user_dao, only if the name is
