@@ -1,3 +1,4 @@
+from src.auth.services.login import LoginService
 from src.app import create_app
 from src.db import DbSession
 from src.inventory.model import Inventory
@@ -120,11 +121,21 @@ def master_client(client, master_role_id):
 
 
 @pytest.fixture()
-def employee_client(client, employee_role_id):
+def employee_client(client, employee_jwt):
     """
-        Creates a client session with an employee role_id
+        Creates a client with a token in Authorization
+        header with a valid employee jwt
     """
-    with client.session_transaction() as session:
-        session['role_id'] = employee_role_id
+    headers = {'Authorization': f'Bearer {employee_jwt}'}
+    client.environ_base['HTTP_AUTHORIZATION'] = headers['Authorization']
 
     yield client
+
+
+@pytest.fixture()
+def employee_jwt(registered_user):
+    session = DbSession()
+    login_service = LoginService(session)
+    user = session.query(User).filter_by(
+        name=user_suject_fields["name"]).first()
+    return login_service.generate_token(user)
