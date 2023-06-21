@@ -44,7 +44,7 @@ def pytest_configure():
     session.commit()
     session.add(UserRole(
         user_id=user_suject.get_id(),
-        role_id=2
+        role_id=RolesID.MASTER.value
     ))
     session.commit()
 
