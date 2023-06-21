@@ -53,3 +53,21 @@ class TestRegisterInventoryEndpoint:
             response = client.post("/inventory", json=request_body)
 
             assert response.status_code == 400
+
+    def test_request_with_missing_token_responds_with_status_401(self, client):
+        """
+        Verify that sending request with unauthorized user responds
+        with a status code of 401 and error json
+
+        Expected behavior:
+            - The response should have a status code of 401
+            - The response should contain a error json
+        """
+        response = client.post("/inventory", json={
+            "barcode": "abarcodeForMissingToken",
+            "name": "bon o bon",
+            "price": 9000,
+            "stock": 10
+        })
+
+        assert response.status_code == 401
