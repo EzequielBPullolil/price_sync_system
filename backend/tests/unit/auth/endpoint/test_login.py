@@ -9,7 +9,6 @@ class TestLoginEndpoint:
 
 
     A valid request consists of
-        - That the user of the session has sufficient privileges to create a user, these are role master or admin 
         - Valid reqbody
           * name: Not registered name and length > 3
           * password: String length > 8
