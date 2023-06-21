@@ -5,13 +5,13 @@ from src.inventory.model import Inventory
 class TestRegisterInventoryEndpointIntegration:
     session = DbSession()
 
-    def test_valid_request_register_endpoint_persist_inventory_in_db(self, client):
+    def test_valid_request_register_endpoint_persist_inventory_in_db(self, employee_client):
         """
           Verify if the valid request register inventory
           endpoint persist an inventory 
         """
         barcode = "integration_test_br_persist"
-        response = client.post("/inventory", json={
+        response = employee_client.post("/inventory", json={
             "barcode": barcode,
             "name": "Sal",
             "price": 9000,
