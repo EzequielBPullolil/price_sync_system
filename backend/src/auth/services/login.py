@@ -1,5 +1,6 @@
 from src.exceptions import InvalidLoginCredentials
 from src.user_role.models import User, UserRole
+from datetime import datetime, timedelta
 import jwt
 import os
 
@@ -41,8 +42,8 @@ class LoginService:
         payload = {}
         payload["user_id"] = user.get_id()
         payload["role_id"] = self.__role_id(user)
-
-        return jwt.encode(payload, self.__secret_key)
+        payload["exp"] = datetime.now() + timedelta(hours=12)
+        return jwt.encode(payload, self.__secret_key, algorithm="HS256")
 
     def __role_id(self, user):
         """
