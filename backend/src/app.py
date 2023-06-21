@@ -1,8 +1,15 @@
-from flask import Flask, make_response, jsonify, session
+from flask import Flask, make_response, jsonify
 from src.inventory.routes import inventory_bp
 from src.auth.routes import auth_bp
+from src.auth.decorators import jwt_required
 from src.exceptions import ApplicationLayerException, DomainException, UnauthorizedUser
 import os
+
+
+@inventory_bp.before_request
+@jwt_required
+def protected_routes():
+    pass
 
 
 def create_app():
