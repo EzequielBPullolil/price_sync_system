@@ -1,13 +1,15 @@
 from flask import Flask, make_response, jsonify
 from src.inventory.routes import inventory_bp
 from src.auth.routes import auth_bp
-from src.auth.decorators import jwt_required
+from src.auth.decorators import jwt_required, role_required
+from src.user_role.role_enum import RolesID
 from src.exceptions import ApplicationLayerException, DomainException, UnauthorizedUser
 import os
 
 
 @inventory_bp.before_request
 @jwt_required
+@role_required(RolesID.EMPLOYEE.value)
 def protected_routes():
     pass
 
