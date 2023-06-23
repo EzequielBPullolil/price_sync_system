@@ -14,8 +14,12 @@ inventory_suject_fields = {
     "name": "inventory_test_suject",
     "barcode": "fixture_registered_barcode"
 }
-user_suject_fields = {
+employee_user_suject = {
     "name": "zeki",
+    "password": "apassword"
+}
+master_user_suject = {
+    "name": "zeki22",
     "password": "apassword"
 }
 
@@ -34,18 +38,25 @@ def pytest_configure():
         price=inventory_suject_fields["price"],
         stock=inventory_suject_fields["stock"]
     )
-    user_suject = User(
-        name=user_suject_fields["name"],
-        password=user_suject_fields["password"]
+    employee_user = User(
+        name=employee_user_suject["name"],
+        password=employee_user_suject["password"]
     )
-
-    session.add(user_suject)
-
+    master_user = User(
+        name=master_user_suject["name"],
+        password=master_user_suject["password"]
+    )
+    session.add(employee_user)
+    session.add(master_user)
     session.add(inventory_suject)
     session.commit()
     session.add(UserRole(
-        user_id=user_suject.get_id(),
+        user_id=employee_user.get_id(),
         role_id=RolesID.EMPLOYEE.value
+    ))
+    session.add(UserRole(
+        user_id=master_user.get_id(),
+        role_id=RolesID.MASTER.value
     ))
     session.commit()
 
