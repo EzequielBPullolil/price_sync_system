@@ -15,7 +15,7 @@ class TestLoginEndpoint:
    """
     endpoint_url = "/auth/login"
 
-    def test_valid_request_responds_with_status_200_and_login_information(self, client, registered_user):
+    def test_valid_request_responds_with_status_200_and_login_information(self, client, employee_user):
         """
             Verify that sending a valid request to the 'login' endpoint responds
             with a status code of 200 and user_id
@@ -25,8 +25,8 @@ class TestLoginEndpoint:
                 - The response should contain a status, message and user_id
         """
         response = client.post(self.endpoint_url, json={
-            "name": registered_user["name"],
-            "password": registered_user["password"]
+            "name": employee_user["name"],
+            "password": employee_user["password"]
         })
 
         assert response.status_code == 200
@@ -77,7 +77,7 @@ class TestLoginEndpoint:
         })
         assert response.status_code == 400
 
-    def test_request_with_registered_name_and_invalid_password_responds_with_status_code_400(self, client, registered_user):
+    def test_request_with_registered_name_and_invalid_password_responds_with_status_code_400(self, client, employee_user):
         """
             Verify that sending a request with registered name but invalid password
             to the 'login' endpoint responds with a status code of 400 and json_error
@@ -87,7 +87,7 @@ class TestLoginEndpoint:
                 - The response should contain a status, message and user_id
         """
         response = client.post(self.endpoint_url, json={
-            "name": registered_user["name"],
+            "name": employee_user["name"],
             "password": "a invalid password for user"
         })
 

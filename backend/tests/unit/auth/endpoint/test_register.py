@@ -41,7 +41,7 @@ class TestRegisterEndpoint:
         assert response_user_dao["role_name"] == "employee"
         assert response_user_dao["id"] != None
 
-    def test_request_endpoint_with_already_registered_name_responds_with_status_400_and_error_json(self, master_client, registered_user, employee_role_id):
+    def test_request_endpoint_with_already_registered_name_responds_with_status_400_and_error_json(self, master_client, employee_user, employee_role_id):
         """
             Verify that sending a valid request with a registered name to the 'create_user' endpoint responds
             with a status code of 400 and an error JSON object.
@@ -52,7 +52,7 @@ class TestRegisterEndpoint:
                 - The response should contain a 'json_error' object with the expected fields and values.
         """
         rebody_with_registered_name = {
-            "name": registered_user["name"],
+            "name": employee_user["name"],
             "password": "zxcvbnm",
             "role_id": employee_role_id
         }
@@ -64,7 +64,7 @@ class TestRegisterEndpoint:
         json_response = response.get_json()
 
         assert json_response["status"] == "error"
-        assert json_response["message"] == f"The name {registered_user['name']} is already registered"
+        assert json_response["message"] == f"The name {employee_user['name']} is already registered"
 
     def test_request_endpoint_with_unauthorized_user_responds_with_status_code_401_and_error_json(self, employee_client, employee_role_id):
         """
