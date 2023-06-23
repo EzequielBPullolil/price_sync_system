@@ -1,7 +1,5 @@
-from datetime import datetime, timedelta
-
-from src.exceptions import InvalidLoginCredentials, UnauthorizedUser
-from src.user_role.models import User, UserRole
+from datetime import datetime
+from src.exceptions import UnauthorizedUser
 import jwt
 import os
 
