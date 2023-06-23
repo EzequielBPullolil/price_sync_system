@@ -45,7 +45,7 @@ def pytest_configure():
     session.commit()
     session.add(UserRole(
         user_id=user_suject.get_id(),
-        role_id=RolesID.MASTER.value
+        role_id=RolesID.EMPLOYEE.value
     ))
     session.commit()
 
@@ -126,10 +126,10 @@ def employee_client(client, employee_jwt):
         Creates a client with a token in Authorization
         header with a valid employee jwt
     """
-    headers = {'Authorization': f'Bearer {employee_jwt}'}
-    client.environ_base['HTTP_AUTHORIZATION'] = headers['Authorization']
+    with client:
+        client.environ_base['HTTP_AUTHORIZATION'] = f'Bearer {employee_jwt}'
 
-    yield client
+        yield client
 
 
 @pytest.fixture()
@@ -137,5 +137,5 @@ def employee_jwt(registered_user):
     session = DbSession()
     login_service = LoginService(session)
     user = session.query(User).filter_by(
-        name=user_suject_fields["name"]).first()
+        name=registered_user["name"]).first()
     return login_service.generate_token(user)
