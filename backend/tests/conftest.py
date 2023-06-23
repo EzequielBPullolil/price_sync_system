@@ -104,10 +104,10 @@ def employee_role_id():
 
 
 @pytest.fixture()
-def registered_user():
+def employee_user():
     session = DbSession()
     user = session.query(User).filter_by(
-        name=user_suject_fields["name"]).first()
+        name=employee_user_suject["name"]).first()
     user_id = str(user.id)
     user_role = session.query(UserRole).filter_by(
         user_id=user_id).first()
@@ -115,20 +115,37 @@ def registered_user():
     return {
         "id": str(user_id),
         "name": user.name,
-        "password": user_suject_fields["password"],
+        "password": employee_user_suject["password"],
         "role_id": user_role.role_id
     }
 
 
 @pytest.fixture()
-def master_client(client, master_role_id):
+def master_user():
+    session = DbSession()
+    user = session.query(User).filter_by(
+        name=master_user_suject["name"]).first()
+    user_id = str(user.id)
+    user_role = session.query(UserRole).filter_by(
+        user_id=user_id).first()
+    session.close()
+    return {
+        "id": str(user_id),
+        "name": user.name,
+        "password": master_user_suject["password"],
+        "role_id": user_role.role_id
+    }
+
+
+@pytest.fixture()
+def master_client(client, master_jwt):
     """
         Creates a client session with an master role_id
     """
-    with client.session_transaction() as session:
-        session['role_id'] = master_role_id
+    with client:
+        client.environ_base['HTTP_AUTHORIZATION'] = f'Bearer {master_jwt}'
 
-    yield client
+        yield client
 
 
 @pytest.fixture()
@@ -144,9 +161,18 @@ def employee_client(client, employee_jwt):
 
 
 @pytest.fixture()
-def employee_jwt(registered_user):
+def employee_jwt(employee_user):
     session = DbSession()
     login_service = LoginService(session)
     user = session.query(User).filter_by(
-        name=registered_user["name"]).first()
+        name=employee_user["name"]).first()
+    return login_service.generate_token(user)
+
+
+@pytest.fixture()
+def master_jwt(master_user):
+    session = DbSession()
+    login_service = LoginService(session)
+    user = session.query(User).filter_by(
+        name=master_user["name"]).first()
     return login_service.generate_token(user)
