@@ -1,5 +1,5 @@
 from src.inventory.model import Inventory
-from src.exceptions import UnregisteredBarcode
+from src.inventory.exceptions import UnregisteredBarcode
 
 
 class BarcodeManager:
