@@ -63,3 +63,9 @@ class UnregisteredBarcode(DomainException):
     def __init__(self, barcode):
         super().__init__(
             message=f"The barcode {barcode} is unregistered")
+
+
+class UnregisteredRole(DomainException):
+    def __init__(self, role_id):
+        super().__init__(
+            message=f"The role with id {role_id} is unregistered")

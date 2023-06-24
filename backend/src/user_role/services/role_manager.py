@@ -2,6 +2,7 @@ from src.exceptions import DomainException
 from ..models import Role, UserRole, User
 from src.auth.utils import UserDAO
 from sqlalchemy import select
+from src.exceptions import UnregisteredRole
 
 
 class RoleManager:
@@ -28,12 +29,16 @@ class RoleManager:
             :args
                 role_id(int): The role id
             :returns [UserDAO]
+            :raises UnregisteredRole
         """
         users = []
         role = self.session.query(Role).filter_by(id=role_id).first()
+        if (role == None):
+            raise UnregisteredRole(role_id)
         query = select(UserRole.user_id).where(UserRole.role_id == role_id)
         users_id = self.session.execute(query).fetchall()
         user_ids = [user[0] for user in users_id]
+
         for user_id in user_ids:
             user = self.session.query(User).filter_by(id=user_id).first()
             user_dao = UserDAO(user, role.name)

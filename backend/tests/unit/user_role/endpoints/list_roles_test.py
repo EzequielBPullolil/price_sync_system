@@ -3,7 +3,6 @@ class TestListRolesEndpoint:
       This test verifies the correct operation of the 'list roles' roles endpoint
       using the following test cases:
         - Valid endpoint request responds with status 200 and a list of roles with their ids and names
-        - Request endpoint with unregistered barcode responds with status code 400 and error information
     """
 
     def test_valid_endpoint_request_responds_with_status_200_and_inventory_dao(self, employee_client):
