@@ -106,17 +106,14 @@ def employee_role_id():
 @pytest.fixture()
 def employee_user():
     session = DbSession()
-    user = session.query(User).filter_by(
-        name=employee_user_suject["name"]).first()
-    user_id = str(user.id)
-    user_role = session.query(UserRole).filter_by(
-        user_id=user_id).first()
+    user_role = session.query(UserRole).filter_by(role_id=RolesID.EMPLOYEE.value).first()
+    user = session.query(User).filter_by(id=user_role.user_id).first()
     session.close()
     return {
-        "id": str(user_id),
+        "id": str(user.get_id()),
         "name": user.name,
         "password": employee_user_suject["password"],
-        "role_id": user_role.role_id
+        "role_id": RolesID.EMPLOYEE.value
     }
 
 
