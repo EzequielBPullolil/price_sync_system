@@ -13,7 +13,7 @@ def list_roles():
     role_manager = RoleManager(session)
 
     roles = role_manager.find_all_roles()
-
+    session.close()
     return jsonify(roles), 200
 
 
@@ -26,5 +26,7 @@ def get_user_with_role(role_id):
     role_manager = RoleManager(session)
 
     users = role_manager.find_all_user_with_role(role_id)
+    session.close()
+    return jsonify(users), 200
 
     return jsonify(users), 200
