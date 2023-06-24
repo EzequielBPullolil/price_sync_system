@@ -44,3 +44,19 @@ class RoleManager:
             user_dao = UserDAO(user, role.name)
             users.append(user_dao.to_dict())
         return users
+
+    def find_user_role(self, user):
+        """
+            Finds the role of user passed and return
+            the role instance
+
+            :args
+                user(User): The user to look up role
+
+            :returns
+                Role
+        """
+        role_id = self.session.query(UserRole.role_id).filter_by(user_id=user.get_id()).first()
+
+        role = self.session.query(Role).filter_by(id=role_id[0]).first()
+        return role
