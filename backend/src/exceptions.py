@@ -29,18 +29,6 @@ class MissingRequiredEntry(ApplicationLayerException):
             message=f"The entry {missingEntry} is missing")
 
 
-class AlreadyRegisteredBarcode(DomainException):
-    def __init__(self, barcode):
-        super().__init__(
-            message=f"The barcode {barcode} is already registered")
-
-
-class UnregisteredBarcode(DomainException):
-    def __init__(self, barcode):
-        super().__init__(
-            message=f"The barcode {barcode} is unregistered")
-
-
 class UnregisteredRole(DomainException):
     def __init__(self, role_id):
         super().__init__(
