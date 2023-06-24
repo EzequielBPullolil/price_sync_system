@@ -1,4 +1,4 @@
-from src.exceptions import AlreadyRegisteredBarcode
+from src.inventory.exceptions import AlreadyRegisteredBarcode
 from src.inventory.model import Inventory
 
 
