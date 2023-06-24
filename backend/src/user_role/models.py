@@ -34,6 +34,12 @@ class Role(Base):
         self.id = id
         self.name = name
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name
+        }
+
 
 class UserRole(Base):
     __tablename__ = 'user_role'
