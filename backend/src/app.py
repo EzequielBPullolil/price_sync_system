@@ -11,6 +11,7 @@ from src.auth.exceptions import UnauthorizedUser
 from src.error_handlers import applicatin_error_handler, domain_error_handler, unauthorized_user_error_handler
 
 
+# Configure inventory_bp as protected route
 @inventory_bp.before_request
 @jwt_required
 @required_employee_or_master_role
@@ -25,11 +26,9 @@ def create_app():
     app.register_blueprint(roles_bp)
     app.register_blueprint(auth_bp)
 
-    app.register_error_handler(
-        ApplicationLayerException, applicatin_error_handler)
+    app.register_error_handler(ApplicationLayerException, applicatin_error_handler)
     app.register_error_handler(DomainException, domain_error_handler)
-    app.register_error_handler(
-        UnauthorizedUser, unauthorized_user_error_handler)
+    app.register_error_handler(UnauthorizedUser, unauthorized_user_error_handler)
 
     return app
 
