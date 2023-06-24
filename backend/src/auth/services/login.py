@@ -1,4 +1,4 @@
-from src.exceptions import InvalidLoginCredentials
+from src.auth.exceptions import InvalidLoginCredentials
 from src.user_role.models import User, UserRole
 from datetime import datetime, timedelta
 import jwt

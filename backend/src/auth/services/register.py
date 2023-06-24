@@ -1,4 +1,4 @@
-from src.exceptions import AlreadyRegisteredName
+from src.auth.exceptions import AlreadyRegisteredName
 from src.user_role.models import User
 from ..utils import UserDAO
 from src.user_role.services import RoleAssigner

@@ -2,9 +2,10 @@ from flask import Flask, make_response, jsonify
 from src.inventory.routes import inventory_bp
 from src.auth.routes import auth_bp
 from src.auth.decorators import jwt_required, required_employee_or_master_role
-from src.exceptions import ApplicationLayerException, DomainException, UnauthorizedUser
+from src.exceptions import ApplicationLayerException, DomainException
 from src.user_role.routes import roles_bp
 import os
+from src.auth.exceptions import UnauthorizedUser
 
 
 @inventory_bp.before_request

@@ -1,6 +1,6 @@
 from flask import session, request
 from functools import wraps
-from src.exceptions import UnauthorizedUser, InvalidUserField
+from src.auth.exceptions import UnauthorizedUser, InvalidUserField
 from .services.validate_token import ValidateTokenService
 from src.db import DbSession
 

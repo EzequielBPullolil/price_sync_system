@@ -1,5 +1,5 @@
 from datetime import datetime
-from src.exceptions import UnauthorizedUser
+from src.auth.exceptions import UnauthorizedUser
 from src.user_role.role_enum import RolesID
 import jwt
 import os
