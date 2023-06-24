@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from src.db import DbSession
-from src.auth.decorators import role_required
+from src.auth.decorators import role_required, jwt_required
 from .services import RoleManager, UserModifierService
 from src.user_role.role_enum import RolesID
 roles_bp = Blueprint('roles', __name__, url_prefix='/roles')
@@ -34,6 +34,7 @@ def get_user_with_role(role_id):
 
 
 @users_bp.route("/<user_id>", methods=["PUT"],  strict_slashes=False)
+@jwt_required
 @role_required(RolesID.MASTER.value)
 def modify_user(user_id):
     """
