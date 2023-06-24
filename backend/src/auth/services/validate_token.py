@@ -1,5 +1,6 @@
 from datetime import datetime
 from src.exceptions import UnauthorizedUser
+from src.user_role.role_enum import RolesID
 import jwt
 import os
 
@@ -26,6 +27,40 @@ class ValidateTokenService:
 
         self.__validate_token_expiration(decoded_token)
         self.__the_role_id_is_expected(decoded_token, role_id)
+
+    def raises_error_if_role_is_not_employee_or_master(self, token):
+        """
+          Verify that the role_id of the token is equal to the role of master or employee,
+          otherwise it throws an UnauthorizedUser exception
+
+          :args
+            token(str): A json web token
+
+          :raises UnauthorizedUser
+        """
+        decoded_token = jwt.decode(
+            token,
+            self.__secret_key,
+            algorithms="HS256")
+
+        self.__validate_token_expiration(decoded_token)
+        self.__validate_if_role_id_is_employee_or_master(decoded_token)
+
+    def __validate_if_role_id_is_employee_or_master(self, decoded_token):
+        """
+          Check if the key "role_id" of the decoder toke is equal to master or employee,
+          otherwise it throws the UnauthorizedUser exception
+
+          :args
+            -decoded_token(dict)
+        """
+        if 'role_id' not in decoded_token:
+            raise UnauthorizedUser()
+
+        if decoded_token["role_id"] == RolesID.EMPLOYEE.value or decoded_token["role_id"] == RolesID.MASTER.value:
+            return
+
+        raise UnauthorizedUser()
 
     def __validate_token_expiration(self, decoded_token):
         """

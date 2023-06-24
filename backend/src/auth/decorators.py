@@ -6,11 +6,6 @@ from src.db import DbSession
 
 
 def role_required(role_id):
-    """
-        Verify that the token passed by the Authorization header has a role_id equal to the one passed by parameter
-        if it is not the same, it throws the UnauthorizedUser exception
-        :raises UnauthorizedUser
-    """
     def decorator_func(view_func):
         @wraps(view_func)
         def wrapper_func(*args, **kwargs):
@@ -28,6 +23,21 @@ def role_required(role_id):
     return decorator_func
 
 
+def required_employee_or_master_role(view_func):
+    @wraps(view_func)
+    def wrapper_func(*args, **kwargs):
+        session = DbSession()
+        authorization_header = request.headers.get('Authorization')
+        validate_token = ValidateTokenService(session)
+        token_jwt = authorization_header.split(' ')[1]
+        validate_token.raises_error_if_role_is_not_employee_or_master(
+            token_jwt)
+        session.close()
+        return view_func(*args, **kwargs)
+
+    return wrapper_func
+
+
 def jwt_required(f):
     """
         Validate that the jwt token exists in the request header
@@ -37,6 +47,7 @@ def jwt_required(f):
         authorization_header = request.headers.get('Authorization')
         if authorization_header and authorization_header.startswith('Bearer '):
             token_jwt = authorization_header.split(' ')[1]
+
             return f(*args, **kwargs)
         raise UnauthorizedUser()
     return decorated_function
