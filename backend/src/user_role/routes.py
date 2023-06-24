@@ -15,3 +15,16 @@ def list_roles():
     roles = role_manager.find_all_roles()
 
     return jsonify(roles), 200
+
+
+@roles_bp.route("/<role_id>", methods=["GET"],  strict_slashes=False)
+def get_user_with_role(role_id):
+    """
+      responds with a list of all available roles
+    """
+    session = DbSession()
+    role_manager = RoleManager(session)
+
+    users = role_manager.find_all_user_with_role(role_id)
+
+    return jsonify(users), 200
