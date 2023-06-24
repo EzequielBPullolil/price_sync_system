@@ -3,7 +3,7 @@ class UserDAO:
         """
           gets the response from an orm request and converts it to a Data access object
         """
-        self.id = user_query_response.id
+        self.id = user_query_response.get_id()
         self.name = user_query_response.name
         self.role_name = role_name
 
