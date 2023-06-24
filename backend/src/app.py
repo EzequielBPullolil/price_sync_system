@@ -1,11 +1,14 @@
-from flask import Flask, make_response, jsonify
+import os
+from flask import Flask
+from src.auth.decorators import jwt_required, required_employee_or_master_role
+# Blueprints
 from src.inventory.routes import inventory_bp
 from src.auth.routes import auth_bp
-from src.auth.decorators import jwt_required, required_employee_or_master_role
-from src.exceptions import ApplicationLayerException, DomainException
 from src.user_role.routes import roles_bp
-import os
+# Exceptions
+from src.exceptions import ApplicationLayerException, DomainException
 from src.auth.exceptions import UnauthorizedUser
+from src.error_handlers import applicatin_error_handler, domain_error_handler, unauthorized_user_error_handler
 
 
 @inventory_bp.before_request
@@ -22,33 +25,11 @@ def create_app():
     app.register_blueprint(roles_bp)
     app.register_blueprint(auth_bp)
 
-    @app.errorhandler(ApplicationLayerException)
-    def applicatin_error_handler(error):
-        return make_response(
-            jsonify({
-                "status": error.status,
-                "message": error.message
-            }), 400
-        )
-
-    @app.errorhandler(DomainException)
-    def domain_error_handler(error):
-
-        return make_response(
-            jsonify({
-                "status": error.status,
-                "message": error.message
-            }), 400
-        )
-
-    @app.errorhandler(UnauthorizedUser)
-    def unauthorized_user_error_handler(error):
-        return make_response(
-            jsonify({
-                "status": error.status,
-                "message": error.message
-            }), 401
-        )
+    app.register_error_handler(
+        ApplicationLayerException, applicatin_error_handler)
+    app.register_error_handler(DomainException, domain_error_handler)
+    app.register_error_handler(
+        UnauthorizedUser, unauthorized_user_error_handler)
 
     return app
 
