@@ -4,7 +4,7 @@ from src.auth.decorators import jwt_required, required_employee_or_master_role
 # Blueprints
 from src.inventory.routes import inventory_bp
 from src.auth.routes import auth_bp
-from src.user_role.routes import roles_bp
+from src.user_role.routes import roles_bp, users_bp
 # Exceptions
 from src.exceptions import ApplicationLayerException, DomainException
 from src.auth.exceptions import UnauthorizedUser
@@ -25,6 +25,7 @@ def create_app():
     app.register_blueprint(inventory_bp)
     app.register_blueprint(roles_bp)
     app.register_blueprint(auth_bp)
+    app.register_blueprint(users_bp)
 
     app.register_error_handler(ApplicationLayerException, applicatin_error_handler)
     app.register_error_handler(DomainException, domain_error_handler)
