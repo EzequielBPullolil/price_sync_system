@@ -3,7 +3,7 @@ import subprocess
 import sys
 
 os.environ['PYTHONPATH'] = '.'
-os.environ['DATABASE_URI'] = 'postgresql://usertestservices:testuser@localhost/stock_sync_system_dev'
+os.environ['DATABASE_URI'] = 'postgresql://dev_user:sqldev@localhost/price_sync_apirest_dev'
 os.environ['SECRET_KEY'] = '2020-2020'
 
 clear_command = 'cls' if os.name == 'nt' else 'clear'
